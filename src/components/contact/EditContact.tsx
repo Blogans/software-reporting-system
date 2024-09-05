@@ -75,7 +75,7 @@ const EditContact: React.FC<EditContactProps> = ({ contact, onContactEdited }) =
           />
         </Form.Group>
 
-        <Button type="submit">Update User</Button>
+        <Button type="submit">Update Contact</Button>
       </Form>
     </Container>
   );
