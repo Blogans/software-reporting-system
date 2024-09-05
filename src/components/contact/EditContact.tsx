@@ -8,8 +8,8 @@ interface EditContactProps {
 }
 
 const EditContact: React.FC<EditContactProps> = ({ contact, onContactEdited }) => {
-  const [firstname, setContactFirstName] = useState(contact.firstName);
-  const [lastname, setContactLastName] = useState(contact.lastName);
+  const [firstName, setContactFirstName] = useState(contact.firstName);
+  const [lastName, setContactLastName] = useState(contact.lastName);
   const [email, setContactEmail] = useState(contact.email);
   const [phone, setContactPhone] = useState(contact.phone);
 
@@ -24,8 +24,8 @@ const EditContact: React.FC<EditContactProps> = ({ contact, onContactEdited }) =
     e.preventDefault();
     onContactEdited({
       _id: contact._id,
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       email,
       phone
     });
@@ -39,7 +39,7 @@ const EditContact: React.FC<EditContactProps> = ({ contact, onContactEdited }) =
           <Form.Label>First Name</Form.Label>
           <Form.Control
             type="text"
-            value={firstname}
+            value={firstName}
             onChange={(e) => setContactFirstName(e.target.value)}
             required
           />
@@ -49,7 +49,7 @@ const EditContact: React.FC<EditContactProps> = ({ contact, onContactEdited }) =
           <Form.Label>Last Name</Form.Label>
           <Form.Control
             type="text"
-            value={lastname}
+            value={lastName}
             onChange={(e) => setContactLastName(e.target.value)}
             required
           />
