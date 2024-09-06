@@ -23,6 +23,7 @@
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.2",
     "react": "^18.2.0",
+    "react-app": "file:",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.0",

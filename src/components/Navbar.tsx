@@ -26,6 +26,9 @@ const AppNavbar: React.FC = () => {
             <Nav.Link as={Link} to="/contacts">
               Contacts
             </Nav.Link>
+            <Nav.Link as={Link} to="/offenders">
+              Offenders
+            </Nav.Link>
             {hasPermission("MANAGE_USERS") && (
               <Nav.Link as={Link} to="/users">
                 Users
