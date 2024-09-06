@@ -9,6 +9,7 @@ export const PERMISSIONS = {
   VIEW_CONTACTS: ['admin', 'manager', 'staff'] as Role[],
   VIEW_VENUES: ['admin', 'manager', 'staff'] as Role[],
   MANAGE_USERS: ['admin'] as Role[],
+  MANAGE_OFFENDERS: ['admin', 'staff'] as Role[],
 } as const;
 
 export type PermissionType = keyof typeof PERMISSIONS;

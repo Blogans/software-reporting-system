@@ -55,7 +55,7 @@ const ContactSchema: Schema = new Schema({
 export const ContactModel = mongoose.model<IContact>('Contact', ContactSchema);
 
 // Offender Model
-interface IOffender extends Document {
+export interface IOffender extends Document {
   _id: mongoose.Types.ObjectId;
   firstName: string;
   lastName: string;
