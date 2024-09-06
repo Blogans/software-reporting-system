@@ -99,21 +99,3 @@ export const deleteOffender = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error deleting offender', error });
   }
 };
-
-export const searchOffenders = async (req: Request, res: Response) => {
-  try {
-    const { query } = req.query;
-    if (typeof query !== 'string') {
-      return res.status(400).json({ message: 'Invalid search query' });
-    }
-    const offenders = await OffenderModel.find({
-      $or: [
-        { firstName: new RegExp(query, 'i') },
-        { lastName: new RegExp(query, 'i') }
-      ]
-    });
-    res.status(200).json(offenders);
-  } catch (error) {
-    res.status(500).json({ message: 'Error searching offenders', error });
-  }
-};

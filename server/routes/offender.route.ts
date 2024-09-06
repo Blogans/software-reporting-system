@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post('/', checkPermission('MANAGE_OFFENDERS'), offenderController.createOffender);
 router.get('/', offenderController.getAllOffenders);
-router.get('/search', offenderController.searchOffenders);
 router.get('/:id', offenderController.getOffenderById);
 router.put('/:id', checkPermission('MANAGE_OFFENDERS'), offenderController.updateOffender);
 router.delete('/:id', checkPermission('MANAGE_OFFENDERS'), offenderController.deleteOffender);
