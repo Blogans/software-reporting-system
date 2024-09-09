@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Container, ListGroup, Button, Modal } from "react-bootstrap";
-import { Venue, Contact } from "../types/types";
-import AddVenue from "./Offenders/AddVenue";
-import EditVenue from "./Offenders/EditVenue";
-import { usePermissions } from "../util/usePermissions";
-import { useApi } from "../util/apiUtil";
-import SearchBar from "./SearchBar";
-// import ItemListAndAdd from "../ItemListAndAdd";
+import { Venue, Contact } from "../../types/types";
+import AddVenue from "./AddVenue";
+import EditVenue from "./EditVenue";
+import { usePermissions } from "../../util/usePermissions";
+import { useApi } from "../../util/apiUtil";
+import SearchBar from "../SearchBar";
+import ItemListAndAdd from "../ItemListAndAdd";
 
 const VenueList: React.FC = () => {
-  const [venues, setVenues] = useState<any[]>([]);
+  const [venues, setVenues] = useState<Venue[]>([]);
   const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -19,7 +19,7 @@ const VenueList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { hasPermission } = usePermissions();
   const { fetchWithAuth } = useApi();
-  const [list, setData] = useState<any>(null);
+
   const getContactName = (contact: Contact) =>
     contact.firstName + " " + contact.lastName;
 
@@ -31,9 +31,6 @@ const VenueList: React.FC = () => {
     try {
       const data = await fetchWithAuth("/api/offenders");
       setVenues(data);
-      setTimeout(() => {
-        console.log(data);
-      }, 2000)
     } catch (err) {
       setError("Error fetching venues");
     }
@@ -41,17 +38,12 @@ const VenueList: React.FC = () => {
 
   const handleAddVenue = async (newVenue: any) => {
     try {
-      console.log(newVenue);
-      newVenue.firstName = newVenue.name;
-      newVenue.lastName = '1';
-      newVenue.dateOfBirth = '2024-12-12';
       const response = await fetchWithAuth("/api/offenders", {
         method: "POST",
         body: JSON.stringify(newVenue),
       });
-      console.log('xx', response.venue);
-      
-      const addedVenue = response;
+
+      const addedVenue = response.venue;
       setVenues([...venues, addedVenue]);
       setShowAddModal(false);
     } catch (err) {
@@ -84,15 +76,11 @@ const VenueList: React.FC = () => {
 
   const handleDeleteVenue = async (venueId: string) => {
     try {
-      const role = localStorage.getItem('role')
-      if (role === 'admin') {
-        await fetchWithAuth(`/api/offenders/${venueId}`, {
-          method: "DELETE",
-        });
-        setVenues(venues.filter((venue) => venue._id !== venueId));
-      } else {
-        alert('No permission');
-      }
+      await fetchWithAuth(`/api/offenders/${venueId}`, {
+        method: "DELETE",
+      });
+
+      setVenues(venues.filter((venue) => venue._id !== venueId));
     } catch (err) {
       setError("Error deleting venue");
     }
@@ -162,7 +150,8 @@ const VenueList: React.FC = () => {
 
   const filterVenues = useCallback(
     (venue: Venue, searchTerm: string) =>
-      [],
+      venue.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      venue.address.toLowerCase().includes(searchTerm.toLowerCase()),
     []
   );
 
@@ -177,41 +166,40 @@ const VenueList: React.FC = () => {
 
   return (
     <Container className="mt-4">
-      <h2>Offenders</h2>
+      <h2>Venues</h2>
       {error && <p className="text-danger">{error}</p>}
 
-      <div style={{display: 'none'}}>
-        <SearchBar<Venue>
-          items={venues}
-          onFilter={handleFilter}
-          filterFunction={filterVenues}
-          placeholder="Search Venues by name or address"
-        />
-      </div>
+      <SearchBar<Venue>
+        items={venues}
+        onFilter={handleFilter}
+        filterFunction={filterVenues}
+        placeholder="Search Venues by name or address"
+      />
 
       <ListGroup>
-        {filteredVenues.length === 0 && <p>No Offenders found1</p>}
-        {filteredVenues.map((venue: any) => (
+        {filteredVenues.length === 0 && <p>No venues found</p>}
+        {filteredVenues.map((venue) => (
           <ListGroup.Item
             key={venue._id}
             className="d-flex justify-content-between align-items-center"
           >
             <div>
               <h3>{venue.name}</h3>
-              <p>Name: {venue.firstName}</p>
-              <p>Email: {venue.email}</p>
-              <p>Phone: {venue.phone}</p>
+              <p>Address: {venue.address}</p>
+              <Button onClick={() => handleShowContacts(venue)}>
+                Manage Contacts
+              </Button>
             </div>
             <div>
               {hasPermission("MANAGE_VENUES") && (
                 <>
-                  {/* <Button
+                  <Button
                 variant="info"
                 className="me-2"
                     onClick={() => handleShowEditModal(venue)}
                   >
                     Edit
-                  </Button>{" "} */}
+                  </Button>{" "}
                   <Button
                     variant="danger"
                     onClick={() => handleDeleteVenue(venue._id)}
@@ -230,13 +218,13 @@ const VenueList: React.FC = () => {
           variant="primary"
           onClick={() => setShowAddModal(true)}
         >
-          Add New Offenders
+          Add New Venue
         </Button>
       )}
 
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New Offenders</Modal.Title>
+          <Modal.Title>Add New Venue</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddVenue onVenueAdded={handleAddVenue} />
@@ -245,7 +233,7 @@ const VenueList: React.FC = () => {
 
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Offenders</Modal.Title>
+          <Modal.Title>Edit Venue</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {selectedVenue && (
@@ -261,7 +249,7 @@ const VenueList: React.FC = () => {
         <Modal.Header closeButton>
           <Modal.Title>Manage Contacts for {selectedVenue?.name}</Modal.Title>
         </Modal.Header>
-        {/* <Modal.Body>
+        <Modal.Body>
           {selectedVenue && (
             <ItemListAndAdd<Contact>
               parentId={selectedVenue._id}
@@ -278,7 +266,7 @@ const VenueList: React.FC = () => {
               canAdd={hasPermission("MANAGE_VENUES")}
             />
           )}
-        </Modal.Body> */}
+        </Modal.Body>
       </Modal>
     </Container>
   );

@@ -25,6 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await fetch("/api/auth/check", {
         credentials: "include",
       });
+      
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);

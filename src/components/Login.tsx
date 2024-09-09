@@ -30,6 +30,7 @@ const Login: React.FC = () => {
 
       const data = await response.json();
       setUser(data.user);
+      localStorage.setItem('role', data.user.role);
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid email or password");

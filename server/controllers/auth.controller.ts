@@ -82,6 +82,7 @@ export const getUser = (req: Request, res: Response) => {
 };
 
 export const checkAuth = (req: Request, res: Response) => {
+  console.log('okok---');
   if (req.session.userId) {
     res.json({ 
       id: req.session.userId, 

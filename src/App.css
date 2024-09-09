@@ -1,0 +1,20 @@
+.d-card{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    position: relative;
+}
+.d-card-btn{
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+    border: none;
+    background: #F44336;
+    color: #fff;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+.d-card-name{
+    font-weight: bold;
+    font-size: 22px;
+}

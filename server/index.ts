@@ -36,6 +36,9 @@ app.use(session({
 
 
 // Use auth routes
+app.get('/api/test', () => {
+  console.log('okok');
+});
 app.use('/api/auth', authRoutes);
 app.use('/api/venues', venueRoutes);
 app.use('/api/contacts', contactRoutes);

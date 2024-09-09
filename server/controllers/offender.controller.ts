@@ -29,7 +29,9 @@ export const getAllOffenders = async (req: Request, res: Response) => {
 export const createOffender = async (req: Request, res: Response) => {
   try {
     const newOffender = new OffenderModel(req.body);
+    
     const savedOffender = await newOffender.save();
+    console.log('ok--', newOffender);
     res.status(201).json(savedOffender);
   } catch (error) {
     res.status(400).json({ message: 'Error creating offender', error });

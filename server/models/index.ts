@@ -46,10 +46,11 @@ export interface IContact extends Document {
 }
 
 const ContactSchema: Schema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
+  firstName: { type: String },
+  lastName: { type: String },
   phone: { type: String, required: true },
   email: { type: String, required: true },
+  name: { type: String, required: true },
 });
 
 export const ContactModel = mongoose.model<IContact>('Contact', ContactSchema);
@@ -65,6 +66,8 @@ export interface IOffender extends Document {
 const OffenderSchema: Schema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  phone: { type: String, required: true },
   dateOfBirth: { type: Date, required: true },
 });
 
