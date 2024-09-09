@@ -1,84 +1,155 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, ListGroup, Button, Modal } from "react-bootstrap";
 import { Contact } from "../../types/types";
+import AddContact from "./AddContact";
+import EditContact from "./EditContact";
+import { usePermissions } from "../../util/usePermissions";
+import { useApi } from "../../util/apiUtil";
 
-interface EditContactProps {
-  contact: Contact;
-  onContactEdited: (updatedContact: Partial<Contact>) => void;
-}
-
-const EditContact: React.FC<EditContactProps> = ({ contact, onContactEdited }) => {
-  const [firstName, setContactFirstName] = useState(contact.firstName);
-  const [lastName, setContactLastName] = useState(contact.lastName);
-  const [email, setContactEmail] = useState(contact.email);
-  const [phone, setContactPhone] = useState(contact.phone);
+const ContactList: React.FC = () => {
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const { hasPermission } = usePermissions();
+  const { fetchWithAuth } = useApi();
 
   useEffect(() => {
-    setContactFirstName(contact.firstName);
-    setContactLastName(contact.lastName);
-    setContactEmail(contact.email);
-    setContactPhone(contact.phone);
-  }, [contact]);
+    fetchContacts();
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onContactEdited({
-      _id: contact._id,
-      firstName,
-      lastName,
-      email,
-      phone
-    });
+  const fetchContacts = async () => {
+    try {
+      const data = await fetchWithAuth("/api/contacts");
+      setContacts(data);
+    } catch (err) {
+      // Error handled elseewhere
+    }
+  };
+
+  const handleAddContact = (newContact: Contact) => {
+    setContacts([...contacts, newContact]);
+    setShowAddModal(false);
+  };
+
+  const handleEditContact = async (updatedContact: Partial<Contact>) => {
+    try {
+      const response = await fetchWithAuth(`/api/contacts/${updatedContact._id}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedContact),
+      });
+
+      const editedContact = response.contact;
+      setContacts(
+        contacts.map((contact) => (contact._id === editedContact._id ? editedContact : contact))
+      );
+      setShowEditModal(false);
+      console.log(editedContact);
+
+      // Clear any previous errors
+      setError(null);
+    } catch (err) {
+      console.error("Error editing contact:", err);
+      // The error message from the server will be in err.message
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+    }
+  };
+
+  const handleDeleteContact = async (contactId: string) => {
+    try {
+      const response = await fetch(`/api/contacts/${contactId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete contact");
+      }
+      setContacts(contacts.filter((contact) => contact._id !== contactId));
+    } catch (err) {
+      setError("Error deleting contact");
+      console.error("Error in handleDeleteContact:", err);
+    }
+  };
+
+  const handleShowEditModal = (contact: Contact) => {
+    setSelectedContact(contact);
+    setShowEditModal(true);
   };
 
   return (
-    <Container>
-      <h2>Edit Contact</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            value={firstName}
-            onChange={(e) => setContactFirstName(e.target.value)}
-            required
-          />
-        </Form.Group>
+    <Container className="mt-4">
+      <h2>Contacts</h2>
+      {error && <p className="text-danger">{error}</p>}
+      <ListGroup>
+        {contacts.length === 0 && <p>No contacts found</p>}
+        {contacts.map((contact) => (
+          <ListGroup.Item
+            key={contact._id}
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div>
+              <h3>
+                {contact.firstName} {contact.lastName}
+              </h3>
+              <p>Email: {contact.email}</p>
+              <p>Phone: {contact.phone}</p>
+            </div>
+            <div>
+              {hasPermission("MANAGE_CONTACTS") && (
+                <>
+                  <Button
+                variant="info"
+                className="me-2"
+                    onClick={() => handleShowEditModal(contact)}
+                  >
+                    Edit
+                  </Button>{" "}
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDeleteContact(contact._id)}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
+            </div>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+      {hasPermission("MANAGE_CONTACTS") && (
+        <Button
+          className="mt-3"
+          variant="primary"
+          onClick={() => setShowAddModal(true)}
+        >
+          Add New Contact
+        </Button>
+      )}
 
-        <Form.Group className="mb-3">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            type="text"
-            value={lastName}
-            onChange={(e) => setContactLastName(e.target.value)}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="text"
-            value={email}
-            onChange={(e) => setContactEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Phone</Form.Label>
-          <Form.Control
-            type="number"
-            value={phone}
-            onChange={(e) => setContactPhone(e.target.value)}
-            required
-          />
-        </Form.Group>
-
-        <Button type="submit">Update Contact</Button>
-      </Form>
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add New Contact</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AddContact onContactAdded={handleAddContact} />
+        </Modal.Body>
+      </Modal>
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Contact</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedContact && (
+            <EditContact contact={selectedContact} onContactEdited={handleEditContact} />
+          )}
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };
 
-export default EditContact;
+export default ContactList;
