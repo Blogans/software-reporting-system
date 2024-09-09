@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Container, ListGroup, Button, Modal } from "react-bootstrap";
 import { Contact } from "../../types/types";
 import AddContact from "./AddContact";
+import EditContact from "./EditContact";
 import { usePermissions } from "../../util/usePermissions";
 import { useApi } from "../../util/apiUtil";
 
 const ContactList: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { hasPermission } = usePermissions();
   const { fetchWithAuth } = useApi();
@@ -30,6 +34,31 @@ const ContactList: React.FC = () => {
     setShowAddModal(false);
   };
 
+  const handleEditContact = async (updatedContact: Partial<Contact>) => {
+    try {
+      const response = await fetchWithAuth(`/api/contacts/${updatedContact._id}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedContact),
+      });
+
+      const editedContact = response.contact;
+      setContacts(
+        contacts.map((contact) => (contact._id === editedContact._id ? editedContact : contact))
+      );
+      setShowEditModal(false);
+      console.log(editedContact);
+
+      // Clear any previous errors
+      setError(null);
+    } catch (err) {
+      console.error("Error editing contact:", err);
+      // The error message from the server will be in err.message
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+    }
+  };
+
   const handleDeleteContact = async (contactId: string) => {
     try {
       const response = await fetch(`/api/contacts/${contactId}`, {
@@ -44,6 +73,11 @@ const ContactList: React.FC = () => {
       setError("Error deleting contact");
       console.error("Error in handleDeleteContact:", err);
     }
+  };
+
+  const handleShowEditModal = (contact: Contact) => {
+    setSelectedContact(contact);
+    setShowEditModal(true);
   };
 
   return (
@@ -64,14 +98,25 @@ const ContactList: React.FC = () => {
               <p>Email: {contact.email}</p>
               <p>Phone: {contact.phone}</p>
             </div>
-            {hasPermission("MANAGE_CONTACTS") && (
-              <Button
-                variant="danger"
-                onClick={() => handleDeleteContact(contact._id)}
-              >
-                Delete
-              </Button>
-            )}
+            <div>
+              {hasPermission("MANAGE_CONTACTS") && (
+                <>
+                  <Button
+                variant="info"
+                className="me-2"
+                    onClick={() => handleShowEditModal(contact)}
+                  >
+                    Edit
+                  </Button>{" "}
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDeleteContact(contact._id)}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
+            </div>
           </ListGroup.Item>
         ))}
       </ListGroup>
@@ -91,6 +136,16 @@ const ContactList: React.FC = () => {
         </Modal.Header>
         <Modal.Body>
           <AddContact onContactAdded={handleAddContact} />
+        </Modal.Body>
+      </Modal>
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Contact</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedContact && (
+            <EditContact contact={selectedContact} onContactEdited={handleEditContact} />
+          )}
         </Modal.Body>
       </Modal>
     </Container>
