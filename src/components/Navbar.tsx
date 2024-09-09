@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { usePermissions } from "../util/usePermissions";
@@ -37,10 +37,16 @@ const AppNavbar: React.FC = () => {
           </Nav>
           {user && (
             <Nav>
-              <Navbar.Text className="me-2">
-                Signed in as: {user.email}
-              </Navbar.Text>
-              <Nav.Link onClick={logout}>Logout</Nav.Link>
+              <NavDropdown
+                title={`Signed in as: ${user.email}`}
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item as={Link} to="/account">
+                  Account
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+              </NavDropdown>
             </Nav>
           )}
         </Navbar.Collapse>
