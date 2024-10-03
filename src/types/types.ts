@@ -32,22 +32,46 @@ export interface Incident {
   _id: string;
   date: string;
   description: string;
-  venue: string;
-  submittedBy: string;
+  venue: {
+    _id: string;
+    name: string;
+  };
+  submittedBy: {
+    _id: string;
+    username: string;
+  };
 }
 
 export interface Warning {
   _id: string;
   date: string;
-  offender: string;
-  incidents: string[];
-  submittedBy: string;
+  offender: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
+  incidents: {
+    _id: string;
+    description: string;
+    date: string;
+  }[];
+  submittedBy: {
+    _id: string;
+    username: string;
+  };
 }
 
 export interface Ban {
   _id: string;
   date: string;
-  offender: string;
+  offender: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
   warnings: string[];
-  submittedBy: string;
+  submittedBy: {
+    _id: string;
+    username: string;
+  };
 }

@@ -190,6 +190,7 @@ const VenueList: React.FC = () => {
                 Manage Contacts
               </Button>
             </div>
+
             <div>
               {hasPermission("MANAGE_VENUES") && (
                 <>
@@ -200,6 +201,7 @@ const VenueList: React.FC = () => {
                   >
                     Edit
                   </Button>{" "}
+
                   <Button
                     variant="danger"
                     onClick={() => handleDeleteVenue(venue._id)}
@@ -212,6 +214,7 @@ const VenueList: React.FC = () => {
           </ListGroup.Item>
         ))}
       </ListGroup>
+      
       {hasPermission("MANAGE_VENUES") && (
         <Button
           className="mt-3"

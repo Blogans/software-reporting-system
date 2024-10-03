@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 // User Model
-interface IUser extends Document {
+export interface IUser extends Document {
   _id: mongoose.Types.ObjectId;
   username: string;
   email: string;
@@ -71,7 +71,7 @@ const OffenderSchema: Schema = new Schema({
 export const OffenderModel = mongoose.model<IOffender>('Offender', OffenderSchema);
 
 // Incident Model
-interface IIncident extends Document {
+export interface IIncident extends Document {
   _id: mongoose.Types.ObjectId;
   date: Date;
   description: string;
@@ -89,7 +89,7 @@ const IncidentSchema: Schema = new Schema({
 export const IncidentModel = mongoose.model<IIncident>('Incident', IncidentSchema);
 
 // Warning Model
-interface IWarning extends Document {
+export interface IWarning extends Document {
   _id: mongoose.Types.ObjectId;
   date: Date;
   offender: mongoose.Types.ObjectId;
@@ -107,7 +107,7 @@ const WarningSchema: Schema = new Schema({
 export const WarningModel = mongoose.model<IWarning>('Warning', WarningSchema);
 
 // Ban Model
-interface IBan extends Document {
+export interface IBan extends Document {
   _id: mongoose.Types.ObjectId;
   date: Date;
   offender: mongoose.Types.ObjectId;
