@@ -5,10 +5,16 @@ type Role = User['role'];
 
 export const PERMISSIONS = {
   MANAGE_CONTACTS: ['admin'] as Role[],
+  MANAGE_WARNINGS: ['admin', 'staff'] as Role[],
+  VIEW_WARNINGS: ['admin', 'staff'] as Role[],
+  MANAGE_BANS: ['admin', 'staff'] as Role[],
+  VIEW_BANS: ['admin', 'staff'] as Role[],
   MANAGE_VENUES: ['admin', 'manager'] as Role[],
   VIEW_CONTACTS: ['admin', 'manager', 'staff'] as Role[],
   VIEW_VENUES: ['admin', 'manager', 'staff'] as Role[],
   MANAGE_USERS: ['admin'] as Role[],
+  MANAGE_INCIDENTS: ['admin', 'manager', 'staff'] as Role[],
+  VIEW_INCIDENTS: ['admin', 'manager', 'staff'] as Role[],
   MANAGE_OFFENDERS: ['admin', 'staff'] as Role[],
 } as const;
 

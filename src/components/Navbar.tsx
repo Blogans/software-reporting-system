@@ -29,11 +29,21 @@ const AppNavbar: React.FC = () => {
             <Nav.Link as={Link} to="/offenders">
               Offenders
             </Nav.Link>
+            <Nav.Link as={Link} to="/incidents">
+              Incidents
+            </Nav.Link>
+            <Nav.Link as={Link} to="/warnings">
+              Warnings
+            </Nav.Link>
+            <Nav.Link as={Link} to="/bans">
+              Bans
+            </Nav.Link>
             {hasPermission("MANAGE_USERS") && (
               <Nav.Link as={Link} to="/users">
                 Users
               </Nav.Link>
             )}
+            
           </Nav>
           {user && (
             <Nav>

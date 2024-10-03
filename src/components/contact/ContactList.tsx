@@ -50,6 +50,7 @@ const ContactList: React.FC = () => {
     <Container className="mt-4">
       <h2>Contacts</h2>
       {error && <p className="text-danger">{error}</p>}
+      
       <ListGroup>
         {contacts.length === 0 && <p>No contacts found</p>}
         {contacts.map((contact) => (
@@ -75,6 +76,7 @@ const ContactList: React.FC = () => {
           </ListGroup.Item>
         ))}
       </ListGroup>
+
       {hasPermission("MANAGE_CONTACTS") && (
         <Button
           className="mt-3"

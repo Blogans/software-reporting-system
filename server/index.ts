@@ -8,6 +8,9 @@ import venueRoutes from './routes/venue.route';
 import contactRoutes from './routes/contact.route';
 import offenderRoutes from './routes/offender.route';
 import userRoutes from './routes/user.route';
+import incidentRoutes from './routes/incident.route';
+import warningsRoutes from './routes/warning.route';
+import bansRoutes from './routes/ban.route';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -41,7 +44,9 @@ app.use('/api/venues', venueRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/offenders', offenderRoutes);
-
+app.use('/api/incidents', incidentRoutes);
+app.use('/api/warnings', warningsRoutes);
+app.use('/api/bans', bansRoutes);
 
 // Test route for jest cause its 1am
 app.get('/', (req, res) => {

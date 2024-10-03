@@ -16,6 +16,10 @@ import Register from "./components/Register";
 import Account from "./components/account/Account";
 import AppNavbar from "./components/Navbar";
 import { usePermissions, PermissionType } from "./util/usePermissions";
+import IncidentReporting from "./components/incident/IncidentReporting";
+import WarningReporting from "./components/warning/WarningReporting";
+import BanReporting from "./components/ban/BanReporting";
+import OffenderList from "./components/offender/OffenderList";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -81,10 +85,42 @@ function AppContent() {
           }
         />
         <Route
+          path="/offenders"
+          element={
+            <ProtectedRoute requiredPermission="MANAGE_OFFENDERS">
+              <OffenderList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/users"
           element={
             <ProtectedRoute requiredPermission="MANAGE_USERS">
               <UserList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/incidents"
+          element={
+            <ProtectedRoute requiredPermission="MANAGE_USERS">
+              <IncidentReporting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/warnings"
+          element={
+            <ProtectedRoute requiredPermission="MANAGE_USERS">
+              <WarningReporting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bans"
+          element={
+            <ProtectedRoute requiredPermission="MANAGE_USERS">
+              <BanReporting />
             </ProtectedRoute>
           }
         />
