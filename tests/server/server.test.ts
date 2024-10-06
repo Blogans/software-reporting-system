@@ -2,13 +2,14 @@ import request from 'supertest';
 import { app, connectToDatabase } from '../../server/index';
 import mongoose from 'mongoose';
 import { UserModel, VenueModel, ContactModel, OffenderModel, IncidentModel, WarningModel, BanModel } from '../../server/models';
+import Dashboard from 'src/components/Dashboard';
 
 describe('Incident Reporting System Tests', () => {
   let adminCookie: string;
   let staffCookie: string;
   let staffUser: any;
   let adminUser: any;
-  
+
   beforeAll(async () => {
     await connectToDatabase();
   });
@@ -47,6 +48,7 @@ describe('Incident Reporting System Tests', () => {
       .post('/api/auth/login')
       .send({ email: 'staff@test.com', password: 'password' });
     staffCookie = staffLogin.headers['set-cookie']?.[0] || '';
+
   });
 
   describe('Authentication', () => {
