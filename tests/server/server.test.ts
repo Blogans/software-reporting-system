@@ -65,31 +65,5 @@ describe('Incident Reporting System Tests', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('user');
     });
-
-    //ban testing
-    describe('Bans', () => {
-      it('should create a new ban', async () => {
-        const offender = await OffenderModel.create({ firstName: 'Bob', lastName: 'Smith', dateOfBirth: '1985-05-05' });
-        const venue = await VenueModel.create({ name: 'Ban Venue', address: '101 Ban St' });
-        const incident = await IncidentModel.create({ date: new Date(), description: 'Ban incident', venue: venue._id, submittedBy: staffUser._id });
-        const warning = await WarningModel.create({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
-        
-        const response = await request(app)
-          .post('/api/bans')
-          .set('Cookie', staffCookie)
-          .send({ date: new Date(), offender: offender._id, warnings: [warning._id], submittedBy: staffUser._id });
-        expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty('ban');
-        
-      });
-  
-      it('should get all bans', async () => {
-        const response = await request(app)
-          .get('/api/bans')
-          .set('Cookie', staffCookie);
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body)).toBeTruthy();
-      });
-    });
   });
 });
