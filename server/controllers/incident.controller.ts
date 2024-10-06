@@ -3,12 +3,14 @@ import { IncidentModel, VenueModel, UserModel, WarningModel, BanModel } from '..
 import mongoose, { Types } from 'mongoose';
 import { IIncident } from '../models/index.js';
 
+
 export async function getIncidentsForUser(userId: string) {
   const user = await UserModel.findById(userId);
   if (!user) {
     throw new Error('User not found');
   }
-  return IncidentModel.find({ submittedBy: userId })
+  
+  return IncidentModel.find({ venue: { $in: user.venues } })
     .populate('venue', 'name')
     .populate('submittedBy', 'username');
 }

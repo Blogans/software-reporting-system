@@ -43,6 +43,9 @@ const AppNavbar: React.FC = () => {
                 Users
               </Nav.Link>
             )}
+            <Nav.Link as={Link} to="/reporting">
+              Reporting
+            </Nav.Link>
             
           </Nav>
           {user && (

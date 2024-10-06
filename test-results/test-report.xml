@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="2" failures="0" errors="0" time="1.236">
-  <testsuite name="Server Tests" errors="0" failures="0" skipped="0" timestamp="2024-08-27T06:39:14" time="1.2" tests="2">
-    <testcase classname="Server Tests GET / should return 200 OK and welcome message" name="Server Tests GET / should return 200 OK and welcome message" time="0.014">
+<testsuites name="jest tests" tests="6" failures="5" errors="0" time="3.829">
+  <testsuite name="Incident Reporting System Tests" errors="0" failures="5" skipped="0" timestamp="2024-10-05T12:33:39" time="3.714" tests="6">
+    <testcase classname="Incident Reporting System Tests Authentication should register a new user" name="Incident Reporting System Tests Authentication should register a new user" time="0.2">
     </testcase>
-    <testcase classname="Server Tests GET /nonexistent should return 404 Not Found" name="Server Tests GET /nonexistent should return 404 Not Found" time="0.002">
+    <testcase classname="Incident Reporting System Tests Authentication should login an existing user" name="Incident Reporting System Tests Authentication should login an existing user" time="0.066">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 200
+Received: 401
+    at Object.&lt;anonymous&gt; (C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:43:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Authentication should check auth status" name="Incident Reporting System Tests Authentication should check auth status" time="0.062">
+      <failure>TypeError: Invalid value &quot;undefined&quot; for header &quot;Cookie&quot;
+    at ClientRequest.setHeader (node:_http_outgoing:662:3)
+    at Test.setHeader [as request] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:825:39)
+    at Test.request [as end] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:960:8)
+    at Test.end (C:\Users\camse\Desktop\software-reporting-system\node_modules\supertest\lib\test.js:118:11)
+    at end (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:283:12)
+    at new Promise (&lt;anonymous&gt;)
+    at Test.Object.&lt;anonymous&gt;.RequestBase.then (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:265:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Authentication should logout a user" name="Incident Reporting System Tests Authentication should logout a user" time="0.06">
+      <failure>TypeError: Invalid value &quot;undefined&quot; for header &quot;Cookie&quot;
+    at ClientRequest.setHeader (node:_http_outgoing:662:3)
+    at Test.setHeader [as request] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:825:39)
+    at Test.request [as end] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:960:8)
+    at Test.end (C:\Users\camse\Desktop\software-reporting-system\node_modules\supertest\lib\test.js:118:11)
+    at end (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:283:12)
+    at new Promise (&lt;anonymous&gt;)
+    at Test.Object.&lt;anonymous&gt;.RequestBase.then (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:265:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Contacts should get all contacts (staff role)" name="Incident Reporting System Tests Contacts should get all contacts (staff role)" time="0.058">
+      <failure>TypeError: Invalid value &quot;undefined&quot; for header &quot;Cookie&quot;
+    at ClientRequest.setHeader (node:_http_outgoing:662:3)
+    at Test.setHeader [as request] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:825:39)
+    at Test.request [as end] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:960:8)
+    at Test.end (C:\Users\camse\Desktop\software-reporting-system\node_modules\supertest\lib\test.js:118:11)
+    at end (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:283:12)
+    at new Promise (&lt;anonymous&gt;)
+    at Test.Object.&lt;anonymous&gt;.RequestBase.then (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:265:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Contacts should create a new contact (admin role)" name="Incident Reporting System Tests Contacts should create a new contact (admin role)" time="0.058">
+      <failure>TypeError: Invalid value &quot;undefined&quot; for header &quot;Cookie&quot;
+    at ClientRequest.setHeader (node:_http_outgoing:662:3)
+    at Test.setHeader [as request] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:825:39)
+    at Test.request [as end] (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\node\index.js:960:8)
+    at Test.end (C:\Users\camse\Desktop\software-reporting-system\node_modules\supertest\lib\test.js:118:11)
+    at end (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:283:12)
+    at new Promise (&lt;anonymous&gt;)
+    at Test.Object.&lt;anonymous&gt;.RequestBase.then (C:\Users\camse\Desktop\software-reporting-system\node_modules\superagent\src\request-base.js:265:31)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
     </testcase>
   </testsuite>
 </testsuites>
