@@ -71,24 +71,33 @@ describe('Incident Reporting System Tests', () => {
         const venue = await VenueModel.create({ name: 'Ban Venue', address: '101 Ban St' });
         const incident = await IncidentModel.create({ date: new Date(), description: 'Ban incident', venue: venue._id, submittedBy: staffUser._id });
         const warning = await WarningModel.create({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
-        
-        // Break #1: Incorrect method, should be POST
+    
+        // Deliberate mistake #1: Wrong method (should be POST, changed to GET)
         const response = await request(app)
-          .put('/api/ban') // Break #2: Wrong endpoint
+          .get('/api/bans') // Should fail because it's a POST route
           .set('Cookie', staffCookie)
-          .send({ date: new Date(), offender: offender._id, submittedBy: staffUser._id }); // Break #3: Missing 'warnings'
-        expect(response.status).toBe(201); // Break #4: This will fail because it might return 400
-        expect(response.body).toHaveProperty('ban');
+          .send({ date: new Date(), offender: offender._id, warnings: [warning._id], submittedBy: staffUser._id });
+        
+        // Deliberate mistake #2: Expecting wrong status code (should be 201 but expecting 500)
+        expect(response.status).toBe(500);
+        
+        // Deliberate mistake #3: Expecting a non-existent property
+        expect(response.body).toHaveProperty('nonExistentProperty');
       });
     
       it('should get all bans', async () => {
-        // Break #5: Requesting an incorrect endpoint
+        // Deliberate mistake #4: Requesting an incorrect endpoint (extra 's')
         const response = await request(app)
-          .get('/api/ban') // Changed from /api/bans to /api/ban
+          .get('/api/banss') // Incorrect endpoint, should fail
           .set('Cookie', staffCookie);
-        expect(response.status).toBe(200); // This will fail since the endpoint is invalid
-        expect(Array.isArray(response.body)).toBeTruthy();
+        
+        // Deliberate mistake #5: Expecting wrong status code (should be 200 but expecting 404)
+        expect(response.status).toBe(404);
+    
+        // Deliberate mistake #6: Expecting response to be a non-array type
+        expect(typeof response.body).toBe('string');
       });
-    });    
+    });
+    
   });
 });
