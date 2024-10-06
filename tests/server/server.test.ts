@@ -117,33 +117,35 @@ describe('Incident Reporting System Tests', () => {
       });
     });
 
-  describe('Admin User Management', () => {
-    it('should get all users', async () => {
-      const response = await request(app)
-        .get('/api/wusers') 
-        .set('Cookie', adminCookie);
-      expect(response.status).toBe(200); 
-      expect(Array.isArray(response.body)).toBeTruthy(); 
+    describe('Admin User Management', () => {
+      it('should get all users', async () => {
+        const response = await request(app)
+          .get('/api/users')
+          .set('Cookie', adminCookie);
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
+  
+      it('should create a new user', async () => {
+        const response = await request(app)
+          .post('/api/users')
+          .set('Cookie', adminCookie)
+          .send({ username: 'newuser', email: 'newuser@test.com', password: 'password', role: 'staff' });
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('user');
+        expect(response.body.user).toHaveProperty('_id');
+      });
+  
+      it('should edit a user', async () => {
+        const response = await request(app)
+          .put(`/api/users/${staffUser._id}`)
+          .set('Cookie', adminCookie)
+          .send({ username: 'updatedstaff', role: 'manager' });
+        expect(response.status).toBe(200);
+        expect(response.body.user.username).toBe('updatedstaff');
+        expect(response.body.user.role).toBe('manager');
+      });
     });
-    it('should create a new user', async () => {
-      const response = await request(app)
-        .post('/api/users')
-        .set('Cookie', adminCookie)
-        .send({ email: 'newuser@test.com', role: 'staff' }); 
-      expect(response.status).toBe(201); 
-      expect(response.body).toHaveProperty('user'); 
-      expect(response.body.user).toHaveProperty('_id'); 
-    });
-    it('should edit a user', async () => {  
-      const response = await request(app)
-        .put(`/api/users/invalidUserId`)
-        .set('Cookie', adminCookie)
-        .send({ username: 'updatedstaff', role: 'invalidRole' }); 
-      expect(response.status).toBe(200); 
-      expect(response.body.user.username).toBe('updatedstaff');
-      expect(response.body.user.role).toBe('manager');
-    });
-  });
   
     describe('Venues', () => {
       it('should create a new venue', async () => {
