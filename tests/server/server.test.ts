@@ -117,7 +117,6 @@ describe('Incident Reporting System Tests', () => {
       });
     });
 
-
     describe('Venues', () => {
       it('should create a new venue', async () => {
         const response = await request(app)
