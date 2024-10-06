@@ -65,5 +65,30 @@ describe('Incident Reporting System Tests', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('user');
     });
+    describe('Bans', () => {
+      it('should create a new ban', async () => {
+        const offender = await OffenderModel.create({ firstName: 'Bob', lastName: 'Smith', dateOfBirth: '1985-05-05' });
+        const venue = await VenueModel.create({ name: 'Ban Venue', address: '101 Ban St' });
+        const incident = await IncidentModel.create({ date: new Date(), description: 'Ban incident', venue: venue._id, submittedBy: staffUser._id });
+        const warning = await WarningModel.create({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
+        
+        // Break #1: Incorrect method, should be POST
+        const response = await request(app)
+          .put('/api/ban') // Break #2: Wrong endpoint
+          .set('Cookie', staffCookie)
+          .send({ date: new Date(), offender: offender._id, submittedBy: staffUser._id }); // Break #3: Missing 'warnings'
+        expect(response.status).toBe(201); // Break #4: This will fail because it might return 400
+        expect(response.body).toHaveProperty('ban');
+      });
+    
+      it('should get all bans', async () => {
+        // Break #5: Requesting an incorrect endpoint
+        const response = await request(app)
+          .get('/api/ban') // Changed from /api/bans to /api/ban
+          .set('Cookie', staffCookie);
+        expect(response.status).toBe(200); // This will fail since the endpoint is invalid
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
+    });    
   });
 });
