@@ -18,6 +18,7 @@ import AppNavbar from "./components/Navbar";
 import { usePermissions, PermissionType } from "./util/usePermissions";
 import Reporting from "./components/reporting/Reporting";
 import BanManagement from "./components/ban/BanReporting";
+import WarningManagement from "./components/warning/WarningReporting";
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredPermission?: PermissionType;
@@ -109,7 +110,7 @@ function AppContent() {
           path="/warnings"
           element={
             <ProtectedRoute requiredPermission="VIEW_WARNINGS">
-              <Dashboard />
+              <WarningManagement />
             </ProtectedRoute>
           }
         />
