@@ -19,8 +19,8 @@ export default {
   reporters: [
     'default',
     ['jest-junit', {
-      outputDirectory: './test-results',
-      outputName: 'test-report.xml',
+      outputDirectory: '.',
+      outputName: 'junit.xml',
     }],
   ],
   coverageReporters: ['cobertura'],
