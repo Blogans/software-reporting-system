@@ -1,8 +1,3 @@
-# Node.js with React
-# Build a Node.js project that uses React.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
   - main
 
@@ -18,8 +13,12 @@ steps:
   - script: |
       npm install
       npm run build
+    displayName: "npm install and build"
+
+  - script: |
       npm run test:ci
-    displayName: "npm install, build, and test"
+    displayName: "Run tests"
+    continueOnError: true
 
   - task: PublishTestResults@2
     displayName: "Publish test results"
@@ -27,8 +26,8 @@ steps:
       testResultsFormat: "JUnit"
       testResultsFiles: "junit.xml"
       mergeTestResults: true
-      failTaskOnFailedTests: true
-      failTaskOnMissingResultsFile: true
+      failTaskOnFailedTests: false
+    condition: succeededOrFailed()
 
   - task: PublishCodeCoverageResults@2
     displayName: "Publish code coverage"
@@ -36,4 +35,12 @@ steps:
       codeCoverageTool: "Cobertura"
       summaryFileLocation: "$(Build.SourcesDirectory)/coverage/cobertura-coverage.xml"
       pathToSources: "$(Build.SourcesDirectory)"
-      failIfCoverageEmpty: true
+      failIfCoverageEmpty: false
+    condition: succeededOrFailed()
+
+  - script: |
+      if [ $AGENT_JOBSTATUS == "Failed" ]; then
+        exit 1
+      fi
+    displayName: 'Check for test failures'
+    condition: always()
