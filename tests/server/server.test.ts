@@ -94,28 +94,28 @@ describe('Incident Reporting System Tests', () => {
     });
 
     describe('Warnings', () => {
-  it('should create a new warning', async () => {
-    const offender = await OffenderModel.create({ firstName: 'Jane', lastName: 'Doe', dateOfBirth: '1990-01-01' });
-    const venue = await VenueModel.create({ name: 'Warning Venue', address: '789 Warning St' });
-    const incident = await IncidentModel.create({ date: new Date(), description: 'Warning incident', venue: venue._id, submittedBy: staffUser._id });
-    
-    const response = await request(app)
-      .post('/api/wwarnings') 
-      .set('Cookie', staffCookie)
-      .send({ date: new Date(), incidents: [incident._id], submittedBy: staffUser._id });
-    expect(response.status).toBe(201); 
-    expect(response.body).toHaveProperty('warning'); 
-    expect(response.body.warning).toHaveProperty('_id');
-  });
-
-  it('should get all warnings', async () => {
-    const response = await request(app)
-      .get('/api/wwarnings') 
-      .set('Cookie', staffCookie);
-    expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBeTruthy(); 
-  });
-});
+      it('should create a new warning', async () => {
+        const offender = await OffenderModel.create({ firstName: 'Jane', lastName: 'Doe', dateOfBirth: '1990-01-01' });
+        const venue = await VenueModel.create({ name: 'Warning Venue', address: '789 Warning St' });
+        const incident = await IncidentModel.create({ date: new Date(), description: 'Warning incident', venue: venue._id, submittedBy: staffUser._id });
+        
+        const response = await request(app)
+          .post('/api/warnings')
+          .set('Cookie', staffCookie)
+          .send({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('warning');
+        expect(response.body.warning).toHaveProperty('_id');
+      });
+  
+      it('should get all warnings', async () => {
+        const response = await request(app)
+          .get('/api/warnings')
+          .set('Cookie', staffCookie);
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
+    });
 
 
     describe('Venues', () => {
