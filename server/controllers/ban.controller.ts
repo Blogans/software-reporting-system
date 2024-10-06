@@ -1,17 +1,36 @@
 import { Request, Response } from 'express';
-import { BanModel, OffenderModel, UserModel } from '../models';
+import { BanModel, OffenderModel, UserModel, VenueModel, IncidentModel, WarningModel } from '../models';
 import mongoose, { Types } from 'mongoose';
 import { IBan } from '../models/index.js';
+
 
 export async function getBansForUser(userId: string) {
   const user = await UserModel.findById(userId);
   if (!user) {
     throw new Error('User not found');
   }
-  return BanModel.find({ submittedBy: userId })
+
+  // First, find all incidents associated with the user's venues
+  const userIncidents = await IncidentModel.find({ venue: { $in: user.venues } });
+  const userIncidentIds = userIncidents.map(incident => incident._id);
+
+  // Then, find warnings that include any of these incidents
+  const userWarnings = await WarningModel.find({ incidents: { $in: userIncidentIds } });
+  const userWarningIds = userWarnings.map(warning => warning._id);
+
+  // Finally, find bans that include any of these warnings
+  const bans = await BanModel.find({ warnings: { $in: userWarningIds } })
     .populate('offender', 'firstName lastName')
-    .populate('warnings', 'date')
+    .populate({
+      path: 'warnings',
+      populate: {
+        path: 'incidents',
+        populate: { path: 'venue', select: 'name' }
+      }
+    })
     .populate('submittedBy', 'username');
+
+  return bans;
 }
 
 export const getAllBans = async (req: Request, res: Response) => {
@@ -22,14 +41,22 @@ export const getAllBans = async (req: Request, res: Response) => {
     } else {
       bans = await BanModel.find()
         .populate('offender', 'firstName lastName')
-        .populate('warnings', 'date')
+        .populate({
+          path: 'warnings',
+          populate: {
+            path: 'incidents',
+            populate: { path: 'venue', select: 'name' }
+          }
+        })
         .populate('submittedBy', 'username');
     }
     res.json(bans);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching bans', error });
+    console.error('Error in getAllBans:', error);
+    res.status(500).json({ message: 'Error fetching bans', error: error });
   }
 };
+
 
 export const createBan = async (req: Request, res: Response) => {
   try {

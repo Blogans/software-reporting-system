@@ -16,11 +16,7 @@ import Register from "./components/Register";
 import Account from "./components/account/Account";
 import AppNavbar from "./components/Navbar";
 import { usePermissions, PermissionType } from "./util/usePermissions";
-import IncidentReporting from "./components/incident/IncidentReporting";
-import WarningReporting from "./components/warning/WarningReporting";
-import BanReporting from "./components/ban/BanReporting";
-import OffenderList from "./components/offender/OffenderList";
-
+import Reporting from "./components/reporting/Reporting";
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredPermission?: PermissionType;
@@ -88,7 +84,7 @@ function AppContent() {
           path="/offenders"
           element={
             <ProtectedRoute requiredPermission="MANAGE_OFFENDERS">
-              <OffenderList />
+              <Dashboard />
             </ProtectedRoute>
           }
         />
@@ -103,24 +99,24 @@ function AppContent() {
         <Route
           path="/incidents"
           element={
-            <ProtectedRoute requiredPermission="MANAGE_USERS">
-              <IncidentReporting />
+            <ProtectedRoute requiredPermission="VIEW_INCIDENTS">
+              <Dashboard />
             </ProtectedRoute>
           }
         />
         <Route
           path="/warnings"
           element={
-            <ProtectedRoute requiredPermission="MANAGE_USERS">
-              <WarningReporting />
+            <ProtectedRoute requiredPermission="VIEW_WARNINGS">
+              <Dashboard />
             </ProtectedRoute>
           }
         />
         <Route
           path="/bans"
           element={
-            <ProtectedRoute requiredPermission="MANAGE_USERS">
-              <BanReporting />
+            <ProtectedRoute requiredPermission="VIEW_BANS">
+              <Dashboard />
             </ProtectedRoute>
           }
         />
@@ -133,6 +129,14 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Account />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reporting"
+          element={
+            <ProtectedRoute>
+              <Reporting />
             </ProtectedRoute>
           }
         />

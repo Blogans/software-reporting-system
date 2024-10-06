@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import { WarningModel, OffenderModel, UserModel } from '../models';
-import mongoose, { Types } from 'mongoose';
+import { WarningModel, OffenderModel, UserModel, IncidentModel } from '../models';
 import { IWarning } from '../models/index.js';
 
 export async function getWarningsForUser(userId: string) {
@@ -8,10 +7,21 @@ export async function getWarningsForUser(userId: string) {
   if (!user) {
     throw new Error('User not found');
   }
-  return WarningModel.find({ submittedBy: userId })
+
+  // First, find all incidents associated with the user's venues
+  const userIncidents = await IncidentModel.find({ venue: { $in: user.venues } });
+  const userIncidentIds = userIncidents.map(incident => incident._id);
+
+  // Then, find warnings that include any of these incidents
+  const warnings = await WarningModel.find({ incidents: { $in: userIncidentIds } })
     .populate('offender', 'firstName lastName')
-    .populate('incidents', 'date description')
+    .populate({
+      path: 'incidents',
+      populate: { path: 'venue', select: 'name' }
+    })
     .populate('submittedBy', 'username');
+
+  return warnings;
 }
 
 export const getAllWarnings = async (req: Request, res: Response) => {
@@ -22,12 +32,16 @@ export const getAllWarnings = async (req: Request, res: Response) => {
     } else {
       warnings = await WarningModel.find()
         .populate('offender', 'firstName lastName')
-        .populate('incidents', 'date description')
+        .populate({
+          path: 'incidents',
+          populate: { path: 'venue', select: 'name' }
+        })
         .populate('submittedBy', 'username');
     }
     res.json(warnings);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching warnings', error });
+    console.error('Error in getAllWarnings:', error);
+    res.status(500).json({ message: 'Error fetching warnings', error: error });
   }
 };
 
