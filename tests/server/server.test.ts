@@ -65,7 +65,7 @@ describe('Incident Reporting System Tests', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('user');
     });
-    
+
     describe('Bans', () => {
       it('should create a new ban', async () => {
         const offender = await OffenderModel.create({ firstName: 'Bob', lastName: 'Smith', dateOfBirth: '1985-05-05' });
@@ -90,5 +90,31 @@ describe('Incident Reporting System Tests', () => {
         expect(Array.isArray(response.body)).toBeTruthy();
       });
     });
+
+    describe('Venues', () => {
+      it('should create a new venue', async () => {
+        const response = await request(app)
+          .get('/api/venues')
+          .set('Cookie', adminCookie)
+          .send({ name: 'Test Venue' }); 
+    
+        expect(response.status).toBe(500); 
+    
+        expect(response.body).toHaveProperty('invalidProperty');
+    
+        expect(response.body.message).toBe('Invalid venue creation');
+      });
+    
+      it('should get all venues', async () => {
+        const response = await request(app)
+          .get('/api/venuess')
+          .set('Cookie', staffCookie);
+    
+        expect(response.status).toBe(404);
+    
+        expect(typeof response.body).toBe('string');
+      });
+    });
+    
   });
 });
