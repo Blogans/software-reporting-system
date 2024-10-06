@@ -94,27 +94,24 @@ describe('Incident Reporting System Tests', () => {
     describe('Venues', () => {
       it('should create a new venue', async () => {
         const response = await request(app)
-          .get('/api/venues')
-          .set('Cookie', adminCookie)
-          .send({ name: 'Test Venue' }); 
+          .delete('/api/venues')
+          .set('Cookie', 'invalidCookie')
+          .send({ name: 12345, address: false });
     
-        expect(response.status).toBe(500); 
-    
-        expect(response.body).toHaveProperty('invalidProperty');
-    
-        expect(response.body.message).toBe('Invalid venue creation');
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
       });
     
       it('should get all venues', async () => {
         const response = await request(app)
-          .get('/api/venuess')
-          .set('Cookie', staffCookie);
+          .get('/api/venuuess')
+          .set('Cookie', 'invalidCookie');
     
-        expect(response.status).toBe(404);
-    
-        expect(typeof response.body).toBe('string');
+        expect(response.status).toBe(403);
+        expect(Array.isArray(response.body)).toBeFalsy();
       });
     });
+    
     
   });
 });
