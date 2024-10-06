@@ -72,29 +72,22 @@ describe('Incident Reporting System Tests', () => {
         const incident = await IncidentModel.create({ date: new Date(), description: 'Ban incident', venue: venue._id, submittedBy: staffUser._id });
         const warning = await WarningModel.create({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
     
-        // Deliberate mistake #1: Wrong method (should be POST, changed to GET)
         const response = await request(app)
-          .get('/api/bans') // Should fail because it's a POST route
+          .get('/api/bans')
           .set('Cookie', staffCookie)
           .send({ date: new Date(), offender: offender._id, warnings: [warning._id], submittedBy: staffUser._id });
         
-        // Deliberate mistake #2: Expecting wrong status code (should be 201 but expecting 500)
         expect(response.status).toBe(500);
         
-        // Deliberate mistake #3: Expecting a non-existent property
         expect(response.body).toHaveProperty('nonExistentProperty');
       });
     
       it('should get all bans', async () => {
-        // Deliberate mistake #4: Requesting an incorrect endpoint (extra 's')
         const response = await request(app)
-          .get('/api/banss') // Incorrect endpoint, should fail
+          .get('/api/banss')
           .set('Cookie', staffCookie);
-        
-        // Deliberate mistake #5: Expecting wrong status code (should be 200 but expecting 404)
+          
         expect(response.status).toBe(404);
-    
-        // Deliberate mistake #6: Expecting response to be a non-array type
         expect(typeof response.body).toBe('string');
       });
     });
