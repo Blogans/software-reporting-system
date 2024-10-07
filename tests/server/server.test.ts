@@ -52,6 +52,7 @@ describe('Incident Reporting System Tests', () => {
       .send({ email: 'staff@test.com', password: 'password' });
     staffCookie = staffLogin.headers['set-cookie']?.[0] || '';
 
+    //Variables Definition
     venue = await VenueModel.create({ name: 'Test Venue', address: '123 Test St' });
     offender = await OffenderModel.create({ firstName: 'John', lastName: 'Doe', dateOfBirth: '1990-01-01' });
     incident = await IncidentModel.create({ 
@@ -72,7 +73,6 @@ describe('Incident Reporting System Tests', () => {
       warnings: [warning._id], 
       submittedBy: staffUser._id 
     });
-
   });
 
   describe('Authentication', () => {
@@ -92,6 +92,7 @@ describe('Incident Reporting System Tests', () => {
       expect(response.body).toHaveProperty('user');
     });
   });
+  
   describe('Bans', () => {
     it('should create a new ban', async () => {
       const offender = await OffenderModel.create({ firstName: 'Bob', lastName: 'Smith', dateOfBirth: '1985-05-05' });
@@ -117,24 +118,24 @@ describe('Incident Reporting System Tests', () => {
     });
   });
 
-    describe('Contacts', () => {
-      it('should create a new contact', async () => {
-        const response = await request(app)
-          .post('/api/contacts')
-          .set('Cookie', adminCookie)
-          .send({ firstName: 'John', lastName: 'Doe', email: 'john@test.com', phone: '1234567890' });
-        expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty('_id');
-      });
-  
-      it('should get all contacts', async () => {
-        const response = await request(app)
-          .get('/api/contacts')
-          .set('Cookie', staffCookie);
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body)).toBeTruthy();
-      });
+  describe('Contacts', () => {
+    it('should create a new contact', async () => {
+      const response = await request(app)
+        .post('/api/contacts')
+        .set('Cookie', adminCookie)
+        .send({ firstName: 'John', lastName: 'Doe', email: 'john@test.com', phone: '1234567890' });
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('_id');
     });
+
+    it('should get all contacts', async () => {
+      const response = await request(app)
+        .get('/api/contacts')
+        .set('Cookie', staffCookie);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBeTruthy();
+    });
+  });
 
   describe('Warnings', () => {
     it('should create a new warning', async () => {
@@ -210,4 +211,5 @@ describe('Incident Reporting System Tests', () => {
       expect(Array.isArray(response.body)).toBeTruthy();
     });
   });
+  
 });
