@@ -8,6 +8,10 @@ describe('Incident Reporting System Tests', () => {
   let staffCookie: string;
   let staffUser: any;
   let adminUser: any;
+  let venue: any;
+  let offender: any;
+  let incident: any;
+  let warning: any;
 
   beforeAll(async () => {
     await connectToDatabase();
@@ -48,6 +52,27 @@ describe('Incident Reporting System Tests', () => {
       .send({ email: 'staff@test.com', password: 'password' });
     staffCookie = staffLogin.headers['set-cookie']?.[0] || '';
 
+    //Variables Definition
+    venue = await VenueModel.create({ name: 'Test Venue', address: '123 Test St' });
+    offender = await OffenderModel.create({ firstName: 'John', lastName: 'Doe', dateOfBirth: '1990-01-01' });
+    incident = await IncidentModel.create({ 
+      date: new Date(), 
+      description: 'Test incident', 
+      venue: venue._id, 
+      submittedBy: staffUser._id 
+    });
+    warning = await WarningModel.create({ 
+      date: new Date(), 
+      offender: offender._id, 
+      incidents: [incident._id], 
+      submittedBy: staffUser._id 
+    });
+    await BanModel.create({ 
+      date: new Date(), 
+      offender: offender._id, 
+      warnings: [warning._id], 
+      submittedBy: staffUser._id 
+    });
   });
 
   describe('Authentication', () => {
