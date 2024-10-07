@@ -14,6 +14,7 @@ import bansRoutes from './routes/ban.route';
 import dashboardRoutes from './routes/dashboard.route';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import databaseSeeder from './utils/databaseSeeder';
 
 const __filename = fileURLToPath(import.meta.url);
 dotenv.config();
@@ -76,6 +77,7 @@ async function startServer() {
 // Check if this file is being run directly
 if (path.resolve(__filename) === path.resolve(process.argv[1])) {
   startServer();
+  await databaseSeeder();
 }
 
 export { app, startServer, connectToDatabase };
