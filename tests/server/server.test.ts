@@ -117,24 +117,24 @@ describe('Incident Reporting System Tests', () => {
     });
   });
 
-  describe('Contacts', () => {
-    it('should create a new contact', async () => {
-      const response = await request(app)
-        .get('/api/contact') //Error #1: Wrong endpoint & method should be POST
-        .set('Cookie', adminCookie)
-        .send({ firstName: 'John', lastName: 'Doe', email: 'john@test.com' }); //Error #2: Missing Phone 
-      expect(response.status).toBe(503);//Error #4: Wrong Status Code 
-      expect(response.body).toHaveProperty('_id');
+    describe('Contacts', () => {
+      it('should create a new contact', async () => {
+        const response = await request(app)
+          .post('/api/contacts')
+          .set('Cookie', adminCookie)
+          .send({ firstName: 'John', lastName: 'Doe', email: 'john@test.com', phone: '1234567890' });
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('_id');
+      });
+  
+      it('should get all contacts', async () => {
+        const response = await request(app)
+          .get('/api/contacts')
+          .set('Cookie', staffCookie);
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
     });
-
-    it('should get all contacts', async () => {
-      const response = await request(app)
-        .post('/api/contact') //Error #3: Wrong endpoint & method should be GET
-        .set('Cookie', staffCookie);
-      expect(response.status).toBe(503);//Error #4: Wrong Status Code
-      expect(Array.isArray(response.body)).toBeTruthy();
-    });
-  });
 
   describe('Warnings', () => {
     it('should create a new warning', async () => {
