@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container, Alert, Form, Button } from 'react-bootstrap';
-import { useApi } from '../../util/apiUtil';
 
 const GenerateReportForm: React.FC<{ onGenerateReport: (startDate: string, endDate: string) => void }> = ({ onGenerateReport }) => {
     const [startDate, setStartDate] = useState('');
