@@ -8,6 +8,10 @@ describe('Incident Reporting System Tests', () => {
   let staffCookie: string;
   let staffUser: any;
   let adminUser: any;
+  let venue: any;
+  let offender: any;
+  let incident: any;
+  let warning: any;
 
   beforeAll(async () => {
     await connectToDatabase();
@@ -48,6 +52,27 @@ describe('Incident Reporting System Tests', () => {
       .send({ email: 'staff@test.com', password: 'password' });
     staffCookie = staffLogin.headers['set-cookie']?.[0] || '';
 
+    venue = await VenueModel.create({ name: 'Test Venue', address: '123 Test St' });
+    offender = await OffenderModel.create({ firstName: 'John', lastName: 'Doe', dateOfBirth: '1990-01-01' });
+    incident = await IncidentModel.create({ 
+      date: new Date(), 
+      description: 'Test incident', 
+      venue: venue._id, 
+      submittedBy: staffUser._id 
+    });
+    warning = await WarningModel.create({ 
+      date: new Date(), 
+      offender: offender._id, 
+      incidents: [incident._id], 
+      submittedBy: staffUser._id 
+    });
+    await BanModel.create({ 
+      date: new Date(), 
+      offender: offender._id, 
+      warnings: [warning._id], 
+      submittedBy: staffUser._id 
+    });
+
   });
 
   describe('Authentication', () => {
@@ -66,106 +91,124 @@ describe('Incident Reporting System Tests', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('user');
     });
-  });
+
+    describe('Bans', () => {
+      it('should create a new ban', async () => {
+        const offender = await OffenderModel.create({ firstName: 'Bob', lastName: 'Smith', dateOfBirth: '1985-05-05' });
+        const venue = await VenueModel.create({ name: 'Ban Venue', address: '101 Ban St' });
+        const incident = await IncidentModel.create({ date: new Date(), description: 'Ban incident', venue: venue._id, submittedBy: staffUser._id });
+        const warning = await WarningModel.create({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
+        
+        const response = await request(app)
+          .post('/api/bans')
+          .set('Cookie', staffCookie)
+          .send({ date: new Date(), offender: offender._id, warnings: [warning._id], submittedBy: staffUser._id });
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('ban');
+        
+      });
   
-  describe('Bans', () => {
-    it('should create a new ban', async () => {
-      const offender = await OffenderModel.create({ firstName: 'Bob', lastName: 'Smith', dateOfBirth: '1985-05-05' });
-      const venue = await VenueModel.create({ name: 'Ban Venue', address: '101 Ban St' });
-      const incident = await IncidentModel.create({ date: new Date(), description: 'Ban incident', venue: venue._id, submittedBy: staffUser._id });
-      const warning = await WarningModel.create({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
-      
-      const response = await request(app)
-        .post('/api/bans')
-        .set('Cookie', staffCookie)
-        .send({ date: new Date(), offender: offender._id, warnings: [warning._id], submittedBy: staffUser._id });
-      expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('ban');
-      
+      it('should get all bans', async () => {
+        const response = await request(app)
+          .get('/api/bans')
+          .set('Cookie', staffCookie);
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
     });
 
-    it('should get all bans', async () => {
-      const response = await request(app)
-        .get('/api/bans')
-        .set('Cookie', staffCookie);
-      expect(response.status).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-    });
-  });
-
-  describe('Warnings', () => {
-    it('should create a new warning', async () => {
-      const offender = await OffenderModel.create({ firstName: 'Jane', lastName: 'Doe', dateOfBirth: '1990-01-01' });
-      const venue = await VenueModel.create({ name: 'Warning Venue', address: '789 Warning St' });
-      const incident = await IncidentModel.create({ date: new Date(), description: 'Warning incident', venue: venue._id, submittedBy: staffUser._id });
-      
-      const response = await request(app)
-        .post('/api/warnings')
-        .set('Cookie', staffCookie)
-        .send({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
-      expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('warning');
-      expect(response.body.warning).toHaveProperty('_id');
-    });
-
-    it('should get all warnings', async () => {
-      const response = await request(app)
-        .get('/api/warnings')
-        .set('Cookie', staffCookie);
-      expect(response.status).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-    });
-  });
-
-  describe('Admin User Management', () => {
-    it('should get all users', async () => {
-      const response = await request(app)
-        .get('/api/users')
-        .set('Cookie', adminCookie);
-      expect(response.status).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-    });
-
-    it('should create a new user', async () => {
-      const response = await request(app)
-        .post('/api/users')
-        .set('Cookie', adminCookie)
-        .send({ username: 'newuser', email: 'newuser@test.com', password: 'password', role: 'staff' });
-      expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('user');
-      expect(response.body.user).toHaveProperty('_id');
-    });
-
-    it('should edit a user', async () => {
-      const response = await request(app)
-        .put(`/api/users/${staffUser._id}`)
-        .set('Cookie', adminCookie)
-        .send({ username: 'updatedstaff', role: 'manager' });
-      expect(response.status).toBe(200);
-      expect(response.body.user.username).toBe('updatedstaff');
-      expect(response.body.user.role).toBe('manager');
-    });
-  });
-
-  describe('Venues', () => {
-    it('should create a new venue', async () => {
-      const response = await request(app)
-        .post('/api/venues')
-        .set('Cookie', adminCookie)
-        .send({ name: 'Test Venue', address: '123 Test St' });
-      expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('venue');
-      expect(response.body.venue).toHaveProperty('_id');
-      expect(response.body.message).toBe('Venue created successfully');
-    });
-
-    it('should get all venues', async () => {
-      const response = await request(app)
-        .get('/api/venues')
-        .set('Cookie', staffCookie);
-      expect(response.status).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-    });
-  });
+    describe('Contacts', () => {
+      it('should create a new contact', async () => {
+        const response = await request(app)
+          .get('/api/contact') //Error #1: Wrong endpoint & method should be POST
+          .set('Cookie', adminCookie)
+          .send({ firstName: 'John', lastName: 'Doe', email: 'john@test.com' }); //Error #2: Missing Phone 
+        expect(response.status).toBe(503);//Error #4: Wrong Status Code 
+        expect(response.body).toHaveProperty('_id');
+      });
   
+      it('should get all contacts', async () => {
+        const response = await request(app)
+          .post('/api/contact') //Error #3: Wrong endpoint & method should be GET
+          .set('Cookie', staffCookie);
+        expect(response.status).toBe(503);//Error #4: Wrong Status Code
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
+    });
+
+    describe('Warnings', () => {
+      it('should create a new warning', async () => {
+        const offender = await OffenderModel.create({ firstName: 'Jane', lastName: 'Doe', dateOfBirth: '1990-01-01' });
+        const venue = await VenueModel.create({ name: 'Warning Venue', address: '789 Warning St' });
+        const incident = await IncidentModel.create({ date: new Date(), description: 'Warning incident', venue: venue._id, submittedBy: staffUser._id });
+        
+        const response = await request(app)
+          .post('/api/warnings')
+          .set('Cookie', staffCookie)
+          .send({ date: new Date(), offender: offender._id, incidents: [incident._id], submittedBy: staffUser._id });
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('warning');
+        expect(response.body.warning).toHaveProperty('_id');
+      });
+  
+      it('should get all warnings', async () => {
+        const response = await request(app)
+          .get('/api/warnings')
+          .set('Cookie', staffCookie);
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
+    });
+
+    describe('Admin User Management', () => {
+      it('should get all users', async () => {
+        const response = await request(app)
+          .get('/api/users')
+          .set('Cookie', adminCookie);
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
+  
+      it('should create a new user', async () => {
+        const response = await request(app)
+          .post('/api/users')
+          .set('Cookie', adminCookie)
+          .send({ username: 'newuser', email: 'newuser@test.com', password: 'password', role: 'staff' });
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('user');
+        expect(response.body.user).toHaveProperty('_id');
+      });
+  
+      it('should edit a user', async () => {
+        const response = await request(app)
+          .put(`/api/users/${staffUser._id}`)
+          .set('Cookie', adminCookie)
+          .send({ username: 'updatedstaff', role: 'manager' });
+        expect(response.status).toBe(200);
+        expect(response.body.user.username).toBe('updatedstaff');
+        expect(response.body.user.role).toBe('manager');
+      });
+    });
+  
+    describe('Venues', () => {
+      it('should create a new venue', async () => {
+        const response = await request(app)
+          .post('/api/venues')
+          .set('Cookie', adminCookie)
+          .send({ name: 'Test Venue', address: '123 Test St' });
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('venue');
+        expect(response.body.venue).toHaveProperty('_id');
+        expect(response.body.message).toBe('Venue created successfully');
+      });
+  
+      it('should get all venues', async () => {
+        const response = await request(app)
+          .get('/api/venues')
+          .set('Cookie', staffCookie);
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+      });
+    });
+  });
 });
