@@ -30,6 +30,7 @@ export const createOffender = async (req: Request, res: Response) => {
   try {
     const newOffender = new OffenderModel(req.body);
     const savedOffender = await newOffender.save();
+    // const saved = await newOffender.save();
     res.status(201).json(savedOffender);
   } catch (error) {
     res.status(400).json({ message: 'Error creating offender', error });
@@ -60,9 +61,9 @@ export const getOffenderById = async (req: Request, res: Response) => {
 export const updateOffender = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, dateOfBirth } = req.body;
+    const { username, email, incident } = req.body;
 
-    if (!firstName && !lastName && !dateOfBirth) {
+    if (!username  ) {
       return res.status(400).json({ message: 'No update fields provided' });
     }
 
@@ -71,9 +72,9 @@ export const updateOffender = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Offender not found' });
     }
 
-    if (firstName) offender.firstName = firstName;
-    if (lastName) offender.lastName = lastName;
-    if (dateOfBirth) offender.dateOfBirth = dateOfBirth;
+    if (username) offender.username = username;
+    if (email) offender.email = email;
+    if (incident) offender.incident = incident;
 
     await offender.save();
 
