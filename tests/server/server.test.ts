@@ -137,6 +137,42 @@ describe('Incident Reporting System Tests', () => {
     });
   });
 
+  describe('Dashboard', () => {
+    it('should retrieve accurate dashboard stats', async () => {
+      const response = await request(app)
+        .get('/api/dashboard/stats')
+        .set('Cookie', adminCookie);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        totalIncidents: 1,
+        totalWarnings: 1,
+        totalBans: 1,
+        totalVenues: 1
+      });
+    });
+
+    it('should retrieve recent incidents and warnings', async () => {
+      const incidentsResponse = await request(app)
+        .get('/api/dashboard/recent/incidents')
+        .set('Cookie', adminCookie);
+
+      expect(incidentsResponse.status).toBe(200);
+      expect(Array.isArray(incidentsResponse.body)).toBeTruthy();
+      expect(incidentsResponse.body.length).toBe(1);
+      expect(incidentsResponse.body[0]._id).toBe(incident._id.toString());
+
+      const warningsResponse = await request(app)
+        .get('/api/dashboard/recent/warnings')
+        .set('Cookie', adminCookie);
+
+      expect(warningsResponse.status).toBe(200);
+      expect(Array.isArray(warningsResponse.body)).toBeTruthy();
+      expect(warningsResponse.body.length).toBe(1);
+      expect(warningsResponse.body[0]._id).toBe(warning._id.toString());
+    });
+  });
+  
   describe('Warnings', () => {
     it('should create a new warning', async () => {
       const offender = await OffenderModel.create({ firstName: 'Jane', lastName: 'Doe', dateOfBirth: '1990-01-01' });
