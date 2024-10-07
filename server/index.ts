@@ -12,6 +12,7 @@ import incidentRoutes from './routes/incident.route';
 import warningsRoutes from './routes/warning.route';
 import bansRoutes from './routes/ban.route';
 import dashboardRoutes from './routes/dashboard.route';
+import reportRoutes from './routes/report.route';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import databaseSeeder from './utils/databaseSeeder';
@@ -50,6 +51,7 @@ app.use('/api/incidents', incidentRoutes);
 app.use('/api/warnings', warningsRoutes);
 app.use('/api/bans', bansRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Test route for jest cause its 1am
 app.get('/', (req, res) => {
