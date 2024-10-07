@@ -7,16 +7,17 @@ This repository contains the code for an Incident Reporting System, designed to 
 The project is organized into several key features, each managed by a different team member:
 
 - `src/`: Source code directory
-  - `venues/`: Venue management (Julian Hong)
-  - `incidents/`: Incident management (Maoyuan Cheng)
-  - `accounts/`: Account management (Iskandar Muminov)
-  - `offenders/`: Offender management (Maoyuan Cheng)
-  - `warnings/`: Warning management (Iskandar Muminov)
-  - `bans/`: Ban management (Julian Hong)
-  - `contacts/`: Contact management (Zhen Tan)
-  - `users/`: User management (Cameron Warton)
-  - `reports/`: Report management (Cameron Warton)
-  - `dashboard/`: Dashboard interface (Zhen Tan)
+  - `components/`: Main component directory
+    - `venues/`: Venue management (Julian Hong)
+    - `incidents/`: Incident management (Maoyuan Cheng)
+    - `accounts/`: Account management (Iskandar Muminov)
+    - `offenders/`: Offender management (Maoyuan Cheng)
+    - `warnings/`: Warning management (Iskandar Muminov)
+    - `bans/`: Ban management (Julian Hong)
+    - `contacts/`: Contact management (Zhen Tan)
+    - `users/`: User management (Cameron Warton)
+    - `reports/`: Report management (Cameron Warton)
+    - `dashboard/`: Dashboard interface (Zhen Tan)
 
 ## Feature Owners
 
