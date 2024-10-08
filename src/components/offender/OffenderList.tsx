@@ -7,7 +7,7 @@ import { useApi } from "../../util/apiUtil";
 import EditOffender from "./EditOffender";
 import { off } from "process";
 import SearchBar from "../SearchBar";
-const ContactList: React.FC = () => {
+const OffenderList: React.FC = () => {
   const [offenders, setOffenders] = useState<Offender[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -177,4 +177,4 @@ const ContactList: React.FC = () => {
   );
 };
 
-export default ContactList;
+export default OffenderList;

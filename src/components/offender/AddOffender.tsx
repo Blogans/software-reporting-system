@@ -30,15 +30,6 @@ const AddOffender: React.FC<AddOffenderProps> = ({ onOffenderAdded }) => {
         throw new Error("Failed to add contact");
       }
 
-      let date = new Date();;
-      let venue = "";
-      const response2 = await fetch('/api/incidents', {
-          method: 'POST',
-          body: JSON.stringify({ date, incident, venue}),
-        });
-
-
-
       const newOffender = await response.json();
       onOffenderAdded(newOffender);
       setUsername("");
@@ -51,47 +42,47 @@ const AddOffender: React.FC<AddOffenderProps> = ({ onOffenderAdded }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <h3>Add New Offender</h3>
-      {error && <Alert variant="danger">{error}</Alert>}
+      <Form onSubmit={handleSubmit}>
+        <h3>Add New Offender</h3>
+        {error && <Alert variant="danger">{error}</Alert>}
 
-      <Form.Group className="mb-3">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-      </Form.Group>
-
-
-
-      <Form.Group className="mb-3">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Incident</Form.Label>
-        <Form.Control
-          type="text"
-          value={incident}
-          onChange={(e) => setIncident(e.target.value)}
-          required
-        />
-      </Form.Group>
-      
+        <Form.Group className="mb-3">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+          />
+        </Form.Group>
 
 
 
-      <Button type="submit">Add Offender</Button>
-    </Form>
+        <Form.Group className="mb-3">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Incident</Form.Label>
+          <Form.Control
+              type="text"
+              value={incident}
+              onChange={(e) => setIncident(e.target.value)}
+              required
+          />
+        </Form.Group>
+
+
+
+
+        <Button type="submit">Add Offender</Button>
+      </Form>
   );
 };
 

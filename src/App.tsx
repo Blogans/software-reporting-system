@@ -11,6 +11,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import VenueList from "./components/venue/VenueList";
 import ContactList from "./components/contact/ContactList";
+import OffenderList from "./components/offender/OffenderList";
 import UserList from "./components/user/UserList";
 import Register from "./components/Register";
 import Account from "./components/account/Account";
@@ -19,6 +20,7 @@ import { usePermissions, PermissionType } from "./util/usePermissions";
 import Reporting from "./components/reporting/Reporting";
 import BanManagement from "./components/ban/BanReporting";
 import WarningManagement from "./components/warning/WarningReporting";
+import IncidentReporting from "./components/incident/IncidentReporting.tsx";
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredPermission?: PermissionType;
@@ -86,7 +88,7 @@ function AppContent() {
           path="/offenders"
           element={
             <ProtectedRoute requiredPermission="MANAGE_OFFENDERS">
-              <Dashboard />
+              <OffenderList />
             </ProtectedRoute>
           }
         />
@@ -102,7 +104,7 @@ function AppContent() {
           path="/incidents"
           element={
             <ProtectedRoute requiredPermission="VIEW_INCIDENTS">
-              <Dashboard />
+              <IncidentReporting />
             </ProtectedRoute>
           }
         />

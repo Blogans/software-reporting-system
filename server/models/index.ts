@@ -63,11 +63,10 @@ export interface IOffender extends Document {
 }
 
 const OffenderSchema: Schema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  dateOfBirth: { type: Date, required: true },
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  incident: { type: String, required: true },
 });
-
 export const OffenderModel = mongoose.model<IOffender>('Offender', OffenderSchema);
 
 // Incident Model

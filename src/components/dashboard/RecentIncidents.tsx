@@ -24,7 +24,7 @@ const RecentIncidents: React.FC = () => {
     <ListGroup>
       {incidents.map((incident) => (
         <ListGroup.Item key={incident._id}>
-          {incident.venue.name} - {new Date(incident.date).toLocaleDateString()}
+          {incident.description} - {new Date(incident.date).toLocaleDateString()}
         </ListGroup.Item>
       ))}
     </ListGroup>

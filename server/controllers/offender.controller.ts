@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { OffenderModel, UserModel } from '../models';
+import {IncidentModel, OffenderModel, UserModel} from '../models';
 import mongoose, { Types } from 'mongoose';
 import { IOffender } from '../models/index.js';
 import { off } from 'process';
@@ -30,6 +30,16 @@ export const createOffender = async (req: Request, res: Response) => {
   try {
     const newOffender = new OffenderModel(req.body);
     const savedOffender = await newOffender.save();
+    const { username, email, incident } = req.body;
+    let date = new Date();
+    let venueId = "6703dabe56288719f36e3898";
+    const newIncident = new IncidentModel({
+      date,
+      description: incident,
+      venue: venueId,
+      submittedBy: req.session.userId
+    });
+    const savedIncident = await newIncident.save();
     // const saved = await newOffender.save();
     res.status(201).json(savedOffender);
   } catch (error) {
