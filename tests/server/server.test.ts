@@ -137,6 +137,46 @@ describe('Incident Reporting System Tests', () => {
     });
   });
 
+  describe('Offenders', () => {
+    it('should create a new offender', async () => {
+      const response = await request(app)
+        .post('/api/offenders')
+        .set('Cookie', staffCookie)
+        .send({ firstName: 'John', lastName: 'Doe', dateOfBirth: '1990-01-01' });
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('_id');
+    });
+
+    it('should get all offenders', async () => {
+      const response = await request(app)
+        .get('/api/offenders')
+        .set('Cookie', staffCookie);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBeTruthy();
+    });
+  });
+
+  describe('Incidents', () => {
+    it('should create a new incident', async () => {
+      const venue = await VenueModel.create({ name: 'Incident Venue', address: '456 Incident St' });
+      const response = await request(app)
+        .post('/api/incidents')
+        .set('Cookie', staffCookie)
+        .send({ date: new Date(), description: 'Test incident', venue: venue._id, submittedBy: staffUser._id });
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('incident');
+      expect(response.body.incident).toHaveProperty('_id');
+    });
+
+    it('should get all incidents', async () => {
+      const response = await request(app)
+        .get('/api/incidents')
+        .set('Cookie', staffCookie);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBeTruthy();
+    });
+  });
+
   describe('Dashboard', () => {
     it('should retrieve accurate dashboard stats', async () => {
       const response = await request(app)

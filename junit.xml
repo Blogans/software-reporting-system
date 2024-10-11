@@ -1,125 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="13" failures="13" errors="0" time="13.131">
-  <testsuite name="Incident Reporting System Tests" errors="0" failures="13" skipped="0" timestamp="2024-10-07T12:48:27" time="12.994" tests="13">
-    <testcase classname="Incident Reporting System Tests Authentication should register a new user" name="Incident Reporting System Tests Authentication should register a new user" time="0.001">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+<testsuites name="jest tests" tests="19" failures="0" errors="0" time="17.24">
+  <testsuite name="Incident Reporting System Tests" errors="0" failures="0" skipped="0" timestamp="2024-10-11T11:59:36" time="17.175" tests="19">
+    <testcase classname="Incident Reporting System Tests Authentication should register a new user" name="Incident Reporting System Tests Authentication should register a new user" time="1.004">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Authentication should login an existing user" name="Incident Reporting System Tests Authentication should login an existing user" time="0.001">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Authentication should login an existing user" name="Incident Reporting System Tests Authentication should login an existing user" time="0.821">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Bans should create a new ban" name="Incident Reporting System Tests Bans should create a new ban" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Bans should create a new ban" name="Incident Reporting System Tests Bans should create a new ban" time="0.727">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Bans should get all bans" name="Incident Reporting System Tests Bans should get all bans" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Bans should get all bans" name="Incident Reporting System Tests Bans should get all bans" time="0.79">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Contacts should create a new contact" name="Incident Reporting System Tests Contacts should create a new contact" time="0.001">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Contacts should create a new contact" name="Incident Reporting System Tests Contacts should create a new contact" time="0.599">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Contacts should get all contacts" name="Incident Reporting System Tests Contacts should get all contacts" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Contacts should get all contacts" name="Incident Reporting System Tests Contacts should get all contacts" time="0.661">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Warnings should create a new warning" name="Incident Reporting System Tests Warnings should create a new warning" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Dashboard should retrieve accurate dashboard stats" name="Incident Reporting System Tests Dashboard should retrieve accurate dashboard stats" time="0.839">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Warnings should get all warnings" name="Incident Reporting System Tests Warnings should get all warnings" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Dashboard should retrieve recent incidents and warnings" name="Incident Reporting System Tests Dashboard should retrieve recent incidents and warnings" time="0.638">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Admin User Management should get all users" name="Incident Reporting System Tests Admin User Management should get all users" time="0.001">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Warnings should create a new warning" name="Incident Reporting System Tests Warnings should create a new warning" time="0.849">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Admin User Management should create a new user" name="Incident Reporting System Tests Admin User Management should create a new user" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Warnings should get all warnings" name="Incident Reporting System Tests Warnings should get all warnings" time="0.723">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Admin User Management should edit a user" name="Incident Reporting System Tests Admin User Management should edit a user" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Admin User Management should get all users" name="Incident Reporting System Tests Admin User Management should get all users" time="0.596">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Venues should create a new venue" name="Incident Reporting System Tests Venues should create a new venue" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Admin User Management should create a new user" name="Incident Reporting System Tests Admin User Management should create a new user" time="0.773">
     </testcase>
-    <testcase classname="Incident Reporting System Tests Venues should get all venues" name="Incident Reporting System Tests Venues should get all venues" time="0">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:16:3
-    at _dispatchDescribe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\camse\Desktop\software-reporting-system\node_modules\jest-circus\build\index.js:55:5)
-    at C:\Users\camse\Desktop\software-reporting-system\tests\server\server.test.ts:6:1
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+    <testcase classname="Incident Reporting System Tests Admin User Management should edit a user" name="Incident Reporting System Tests Admin User Management should edit a user" time="0.714">
     </testcase>
-    <testcase classname=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." name=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
-      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;Error: thrown: \&quot;Exceeded timeout of 5000 ms for a hook.\nAdd a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.\&quot;\n    at C:\\Users\\camse\\Desktop\\software-reporting-system\\tests\\server\\server.test.ts:20:3\n    at _dispatchDescribe (C:\\Users\\camse\\Desktop\\software-reporting-system\\node_modules\\jest-circus\\build\\index.js:91:26)\n    at describe (C:\\Users\\camse\\Desktop\\software-reporting-system\\node_modules\\jest-circus\\build\\index.js:55:5)\n    at C:\\Users\\camse\\Desktop\\software-reporting-system\\tests\\server\\server.test.ts:6:1\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)&quot;}</failure>
+    <testcase classname="Incident Reporting System Tests Incidents should create a new incident" name="Incident Reporting System Tests Incidents should create a new incident" time="0.682">
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Incidents should get all incidents" name="Incident Reporting System Tests Incidents should get all incidents" time="0.769">
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Offenders should create a new offender" name="Incident Reporting System Tests Offenders should create a new offender" time="0.618">
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Offenders should get all offenders" name="Incident Reporting System Tests Offenders should get all offenders" time="0.647">
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Venues should create a new venue" name="Incident Reporting System Tests Venues should create a new venue" time="0.643">
+    </testcase>
+    <testcase classname="Incident Reporting System Tests Venues should get all venues" name="Incident Reporting System Tests Venues should get all venues" time="0.719">
     </testcase>
   </testsuite>
 </testsuites>
